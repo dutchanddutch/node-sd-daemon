@@ -1,0 +1,17 @@
+{
+  "name": "sd-daemon",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dutchanddutch/node-sd-daemon.git"
+  },
+  "scripts": {},
+  "author": "Matthijs van Duin <matthijsvanduin@gmail.com>",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "abstract-socket": "git://github.com/dutchanddutch/node-abstractsocket.git#play"
+  },
+  "devDependencies": {}
+}
