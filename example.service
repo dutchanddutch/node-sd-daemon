@@ -1,0 +1,37 @@
+# Usage:
+#	copy this file to ~/.config/systemd/user/
+#	change WorkingDirectory to point to the sd-daemon directory
+#	change ExecStart if necessary to use the appropriate node executable
+#
+#	to start the service directly:
+#		run: systemctl --user daemon-reload
+#		run: systemctl --user start example.service
+#
+#	to start the service using socket activation:
+#		copy example.socket to ~/.config/systemd/user/
+#		adjust the port number if necessary
+#		run: systemctl --user daemon-reload
+#		run: systemctl --user start example.socket
+#		connect to the socket
+#
+# It is worthwhile to use two extra terminals to monitor the service status:
+#
+#	watch -n 0.1 systemctl --user status example.service
+#
+# and journal:
+#
+#	journalctl --user -f
+
+[Unit]
+Description=sd-daemon/example.js service
+
+[Install]
+Also=example.socket
+
+[Service]
+Type=notify
+FileDescriptorStoreMax=1
+WorkingDirectory=/home/dev/js/sd-daemon
+ExecStart=/usr/bin/node example.js
+
+# vim: ft=dosini

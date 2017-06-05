@@ -1,18 +1,45 @@
 'use strict';
 
-// An easy way to see this in action:  open up one terminal and run:
-//
-//	watch -n 0.1 systemctl --user status example.service
-//
-// This will monitor the example.service and is where you can see all the
-// interesting stuff happen.  Then from another terminal do:
-//
-//	systemd-run --user --unit=example.service --service-type=notify \
-//		node /path/to/sd-daemon/example.js
-//
-// Note that the script path must be absolute!
+// See example.service
 
-const { notify } = require('.');
+const { notify, fds } = require('.');
+const { createServer } = require('net');
+
+for( let [name, fd] of fds )
+	console.log( `received fd ${fd} (${name})` );
+
+let server = createServer();
+
+server.on( 'error', function(err) {
+	console.error(err);
+	process.exit(0);
+});
+
+server.on( 'connection', function(s) {
+	console.log( '"serving" client' );
+	s.destroy();  // you're welcome! come back any time!
+});
+
+let fdmap = new Map( fds );
+
+if( fdmap.has('example.socket') ) {
+	// socket activation!
+	server.listen({ fd: fdmap.get('example.socket') });
+	console.log( 'socket activation! yay! \\o/' );
+
+	// no reason to stay running just for this socket,
+	// we'll get started again if necessary anyway
+	server.unref();
+
+} else if( fdmap.has('listener') ) {
+	// reuse saved listener
+	server.listen({ fd: fdmap.get('listener') });
+
+} else {
+	// create listener and save it for reuse if service is restarted
+	server.listen(1234);
+	notify.fdstore( 'listener', server );
+}
 
 const delay = function( s ) {
 	return new Promise( resolve => setTimeout( resolve, s * 1000 ) );
@@ -47,10 +74,14 @@ const delay = function( s ) {
 	// too long, systemd will help you, with SIGKILL.
 	notify.stopping();
 
+	server.close();
+
 	notify.status( "cleaning up my mess..." );
 	await delay(3);
 	notify.status( "all tidy!" );
+	process.exit(0);
 })()
 .catch(err => {
 	console.error(err);
+	process.exit(1);
 });

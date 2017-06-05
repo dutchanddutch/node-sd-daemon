@@ -1,0 +1,10 @@
+[Unit]
+Description=sd-daemon/example.js socket
+
+[Install]
+WantedBy=sockets.target
+
+[Socket]
+ListenStream=1234
+
+# vim: ft=dosini
