@@ -1,6 +1,6 @@
 'use strict';
 
-const notify            = require('./lib/notify');
-const { fds, fd_names } = require('./lib/fds');
+const notify	= require('./lib/notify');
+const fds	= require('./lib/fds');
 
-module.exports = { notify, fds, fd_names };
+module.exports = { notify, fds };
