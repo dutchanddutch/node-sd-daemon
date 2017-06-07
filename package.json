@@ -7,7 +7,9 @@
     "type": "git",
     "url": "git://github.com/dutchanddutch/node-sd-daemon.git"
   },
-  "scripts": {},
+  "scripts": {
+    "test": "./test/run-tests.sh"
+  },
   "author": "Matthijs van Duin <matthijsvanduin@gmail.com>",
   "license": "UNLICENSED",
   "dependencies": {
