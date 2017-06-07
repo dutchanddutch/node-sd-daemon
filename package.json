@@ -23,5 +23,8 @@
   },
   "keywords": [
     "systemd"
+  ],
+  "os": [
+      "linux"
   ]
 }
