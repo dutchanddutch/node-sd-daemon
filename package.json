@@ -1,32 +1,28 @@
 {
   "name": "sd-daemon",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "utilities for systemd services",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/dutchanddutch/node-sd-daemon.git"
-  },
+  "main": "lib/index.js",
+  "repository": "github:dutchanddutch/node-sd-daemon",
   "scripts": {
     "test": "./test/run-tests.sh"
   },
   "author": "Matthijs van Duin <matthijsvanduin@gmail.com>",
   "license": "UNLICENSED",
   "dependencies": {
-    "abstract-socket": "git://github.com/dutchanddutch/node-abstractsocket.git#play"
+    "abstract-socket": "github:dutchanddutch/node-abstractsocket#play"
   },
   "devDependencies": {},
-  "bugs": {
-    "url": "https://github.com/dutchanddutch/node-sd-daemon/issues"
-  },
+  "bugs": "https://github.com/dutchanddutch/node-sd-daemon/issues",
   "homepage": "https://github.com/dutchanddutch/node-sd-daemon#readme",
   "directories": {
-    "lib": "lib"
+    "lib": "lib",
+    "test": "test"
   },
   "keywords": [
     "systemd"
   ],
   "os": [
-      "linux"
+    "linux"
   ]
 }
