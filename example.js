@@ -20,20 +20,18 @@ server.on( 'connection', function(s) {
 	s.destroy();  // you're welcome! come back any time!
 });
 
-let fdmap = new Map( fds );
-
-if( fdmap.has('example.socket') ) {
+if( fds.has('example.socket') ) {
 	// socket activation!
-	server.listen({ fd: fdmap.get('example.socket') });
+	server.listen({ fd: fds.get('example.socket') });
 	console.log( 'socket activation! yay! \\o/' );
 
 	// no reason to stay running just for this socket,
 	// we'll get started again if necessary anyway
 	server.unref();
 
-} else if( fdmap.has('listener') ) {
+} else if( fds.has('listener') ) {
 	// reuse saved listener
-	server.listen({ fd: fdmap.get('listener') });
+	server.listen({ fd: fds.get('listener') });
 
 } else {
 	// create listener and save it for reuse if service is restarted
