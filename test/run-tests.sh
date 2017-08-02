@@ -17,6 +17,25 @@ unit=node-sd-daemon-test.service
 
 ctl=( systemctl --no-ask-password --user --no-pager )
 
+
+if ! type -p systemctl &>/dev/null; then
+	echo -e "\e[1;33msystemctl not found, skipping tests\e[m" >&2
+	exit 0
+fi
+if ! type -p systemd-run &>/dev/null; then
+	echo -e "\e[1;33msystemd-run not found, skipping tests\e[m" >&2
+	exit 0
+fi
+if ! "${ctl[@]}" show-environment >/dev/null; then
+	echo -e "\e[1;33msystemctl --user does not work, skipping tests\e[m" >&2
+	# systemctl --user tries, in order:
+	#	1. kdbus device at "/sys/fs/kdbus/$UID-user/bus"
+	#	2. unix socket at "$XDG_RUNTIME_DIR/systemd/private"
+	#	3. dbus session bus (address spec in $DBUS_SESSION_BUS_ADDRESS,
+	#		typically "unix:path=$XDG_RUNTIME_DIR/bus")
+	exit 0
+fi
+
 cleanup() (
 	set +e
 	"${ctl[@]}" --no-block stop $unit &>/dev/null
