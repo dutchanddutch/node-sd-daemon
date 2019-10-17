@@ -76,3 +76,31 @@ watchdog.reset( timeout );
 
 // disable watchdog
 watchdog.reset( Infinity );
+```
+
+## Journal logging
+
+```js
+const { journal } = require('sd-daemon');
+
+// Send a log message to journald.  The argument should be an iterable of
+// key-value pairs, an object, or a string.
+journal( message );
+// If message is a non-iterable object, it is treated equivalent to
+journal( Object.entries( message ) );
+// If message is a string, it is treated as equivalent to
+journal({ message });
+
+// The keys of the message are implicitly cast to all-uppercase.
+//
+// If a value is null or undefined that key-value pair is ignored, otherwise
+// if it is not a Buffer the value is stringified and utf8-encoded.
+//
+// There's one special case: the 'priority' value may use the standard names
+// for priority levels (emerg, panic, alert, crit, err/error, warning/warn,
+// notice, info, debug), which will be mapped to their numeric value.
+
+// examples:
+journal( 'hello world' );
+journal({ message: 'hello world', priority: 'debug' });
+```
