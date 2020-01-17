@@ -10,7 +10,7 @@
   "author": "Matthijs van Duin <matthijsvanduin@gmail.com>",
   "license": "UNLICENSED",
   "dependencies": {
-    "abstract-socket": "github:dutchanddutch/node-abstractsocket#play"
+    "socket-calls": "github:dutchanddutch/node-socket-calls"
   },
   "devDependencies": {},
   "bugs": "https://github.com/dutchanddutch/node-sd-daemon/issues",
