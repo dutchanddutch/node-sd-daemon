@@ -58,6 +58,19 @@ if( fds.has('listener') ) {
 Note: this requires that the `FileDescriptorStoreMax` property of the service
 is set to a non-zero value.
 
+File descriptors are automatically removed from the fdstore if the fd receives a
+POLLERR or POLLHUP event.  Since systemd v246 this behaviour can be inhibited with:
+
+```js
+notify.fdstore( name, fd, { poll: false } );
+```
+
+Since systemd v236 file descriptors can also be manually removed using:
+
+```js
+notify.fdstore_remove( name );
+```
+
 ## Service watchdog
 
 ```js
