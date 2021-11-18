@@ -22,6 +22,13 @@ notify.stopping();	// call when exiting
 notify.status( string );  // max 16K (utf-8 encoded)
 notify.errno( int );
 notify.mainpid( int );
+
+// (new in systemd v236)
+// Extends service timeouts (start, stop, runtime, and watchdog) to at least
+// given value in seconds (supports μs resolution).  Timeouts are never
+// decreased by this, nor does it change the configured watchdog timeout (i.e.
+// watchdog.reset() will reset the watchdog to its configured interval again).
+notify.extend_timeouts( timeout );
 ```
 
 ## Socket activation
