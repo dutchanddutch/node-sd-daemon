@@ -19,7 +19,7 @@ notify.stopping();	// call when exiting
 // requests will result in the service being restarted after it has exited.  If
 // your service fails to exit within reasonable time, it will get killed.
 
-notify.status( string );
+notify.status( string );  // max 16K (utf-8 encoded)
 notify.errno( int );
 notify.mainpid( int );
 ```
