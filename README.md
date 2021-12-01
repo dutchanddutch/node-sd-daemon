@@ -1,6 +1,13 @@
 # node-sd-daemon
 systemd support for node.js services (socket activation, etc)
 
+Note that this isn't the `sd-daemon` package on npm. You can currently install
+this package using:
+```
+npm install github:dutchanddutch/node-sd-daemon
+```
+(but I might eventually rename this package and put it on npm)
+
 ## Sending notifications
 
 ```js
@@ -29,53 +36,6 @@ notify.mainpid( int );
 // decreased by this, nor does it change the configured watchdog timeout (i.e.
 // watchdog.reset() will reset the watchdog to its configured interval again).
 notify.extend_timeouts( timeout );
-```
-
-## Socket activation
-
-```js
-const { fds } = require('sd-daemon');
-
-if( fds.has('example.socket') ) {
-	server.listen({ fd: fds.get('example.socket') });
-
-	// no reason to stay running just for this socket,
-	// we'll get started again if necessary anyway
-	server.unref();
-}
-
-// see example.socket + example.service + example.js
-```
-
-## File descriptor store
-
-```js
-const { fds, notify } = require('sd-daemon');
-
-if( fds.has('listener') ) {
-	// reuse saved listener
-	server.listen({ fd: fds.get('listener') });
-} else {
-	// create listener and save it for reuse if service is restarted
-	server.listen( 1234 );
-	notify.fdstore( 'listener', server );
-}
-```
-
-Note: this requires that the `FileDescriptorStoreMax` property of the service
-is set to a non-zero value.
-
-File descriptors are automatically removed from the fdstore if the fd receives a
-POLLERR or POLLHUP event.  Since systemd v246 this behaviour can be inhibited with:
-
-```js
-notify.fdstore( name, fd, { poll: false } );
-```
-
-Since systemd v236 file descriptors can also be manually removed using:
-
-```js
-notify.fdstore_remove( name );
 ```
 
 ## Service watchdog
@@ -123,4 +83,51 @@ journal({ message });
 // examples:
 journal( 'hello world' );
 journal({ message: 'hello world', priority: 'debug' });
+```
+
+## Socket activation
+
+```js
+const { fds } = require('sd-daemon');
+
+if( fds.has('example.socket') ) {
+	server.listen({ fd: fds.get('example.socket') });
+
+	// no reason to stay running just for this socket,
+	// we'll get started again if necessary anyway
+	server.unref();
+}
+
+// see example.socket + example.service + example.js
+```
+
+## File descriptor store
+
+```js
+const { fds, notify } = require('sd-daemon');
+
+if( fds.has('listener') ) {
+	// reuse saved listener
+	server.listen({ fd: fds.get('listener') });
+} else {
+	// create listener and save it for reuse if service is restarted
+	server.listen( 1234 );
+	notify.fdstore( 'listener', server );
+}
+```
+
+Note: this requires that the `FileDescriptorStoreMax` property of the service
+is set to a non-zero value.
+
+File descriptors are automatically removed from the fdstore if the fd receives a
+POLLERR or POLLHUP event.  Since systemd v246 this behaviour can be inhibited with:
+
+```js
+notify.fdstore( name, fd, { poll: false } );
+```
+
+Since systemd v236 file descriptors can also be manually removed using:
+
+```js
+notify.fdstore_remove( name );
 ```
