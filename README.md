@@ -63,6 +63,10 @@ watchdog.reset( Infinity );
 ```js
 const { journal } = require('sd-daemon');
 
+// boolean indicating whether stderr is connected to journald and therefore
+// logging directly to journal is preferred over logging to stderr
+journal.is_stderr
+
 // Send a log message to journald.  The argument should be an iterable of
 // key-value pairs, an object, or a string.
 journal( message );
