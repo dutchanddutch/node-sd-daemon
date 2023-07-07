@@ -1,6 +1,6 @@
 {
   "name": "sd-daemon",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "utilities for systemd services",
   "main": "lib/index.js",
   "repository": "github:dutchanddutch/node-sd-daemon",
